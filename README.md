@@ -5,13 +5,16 @@ Exploring open data from the Canton of Zuerich.
 
 # Try it live
 
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/wildtreetech/explore-open-data/master)
+
 You can try out all the examples here live without installing anything by
 clicking the badge above. Feel free to edit and explore as you wish!
 
 
 # Contents
 
-1. [Explore the Velo counter data]()
+1. [Explore the Velo counter data](https://mybinder.org/v2/gh/wildtreetech/explore-open-data/master?filepath=bikes-per-week.ipynb
+)
 
 
 # Contributing
