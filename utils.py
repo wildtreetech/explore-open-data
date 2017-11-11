@@ -20,7 +20,7 @@ def get_velo_data(location, year=2016):
     if not os.path.exists(fname):
         urlretrieve(URLS[year], fname)
 
-    data = pd.read_csv(fname, parse_dates=True, index_col='Datum')
+    data = pd.read_csv(fname, parse_dates=True, dayfirst=True, index_col='Datum')
 
     # filter by location
     data = data[data.Standort == location]
