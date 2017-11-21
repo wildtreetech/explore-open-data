@@ -31,3 +31,8 @@ def get_velo_data(location, year=2016):
     data['Total'] = data.Velo_in + data.Velo_out
 
     return data
+
+
+def holidays():
+    """Holidays in Zuerich"""
+    return pd.read_csv("holidays.csv", parse_dates=True, index_col=0)
