@@ -6,6 +6,5 @@ wget -q -O bikes-2015.csv "https://data.stadt-zuerich.ch/dataset/verkehrszaehlun
 
 # clean the output from the notebooks
 for d in *ipynb; do
-    echo $d;
-    python clean_notebook.py $d > $d;
+    python clean_notebook.py $d;
 done;
