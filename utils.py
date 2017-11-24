@@ -1,4 +1,5 @@
 import os
+import urllib
 from urllib.request import urlretrieve
 
 import pandas as pd
@@ -33,6 +34,37 @@ def get_velo_data(location, year=2016):
     return data
 
 
-def holidays():
-    """Holidays in Zuerich"""
-    return pd.read_csv("holidays.csv", parse_dates=True, index_col=0)
+def get_weather_data():
+    """Zurich weather data for 2016"""
+    fname = 'weather-2016.html'
+    if not os.path.exists(fname):
+        data = ('messw_beg=01.01.2016&messw_end=31.12.2016&'
+                'felder[]=Temp2m&felder[]=TempWasser&felder[]=Windchill&'
+                'felder[]=LuftdruckQFE&felder[]=Regen&felder[]=Taupunkt&'
+                'felder[]=Strahlung&felder[]=Feuchte&felder[]=Pegel&'
+                'auswahl=2&combilog=mythenquai&suchen=Werte anzeigen')
+        data = data.encode('ascii')
+
+        req = urllib.request.Request(
+            'https://www.tecson-data.ch/zurich/mythenquai/uebersicht/messwerte.php',
+            method='POST',
+            data=data,
+            headers={"Content-Type": "application/x-www-form-urlencoded",
+                     'User-Agent': 'http://github.com/wildtreetech/explore-open-data'
+                     },
+            )
+
+        with urllib.request.urlopen(req) as web:
+            with open(fname, 'w') as local:
+                local.write(web.read().decode('iso-8859-1'))
+
+    df = pd.read_html(fname, attrs={'border': '1'}, skiprows=1)
+    # take the first data frame from the list of data frames
+    df = df[0]
+    # this refers to the first column of the data frame now
+    df[0] = pd.to_datetime(df[0], dayfirst=True)
+    df.columns = ['Date', 'Temp', 'WaterTemp', 'Windchill', 'Pressure', 'Rain',
+                  'Dewpoint', 'Radiation', 'Humidity', 'Waterlevel']
+    df = df.set_index('Date')
+
+    return df
