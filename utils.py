@@ -1,6 +1,6 @@
 import os
 import urllib
-from urllib.request import urlretrieve
+import requests
 
 import pandas as pd
 
@@ -19,7 +19,11 @@ def get_velo_data(location, year=2016):
 
     fname = "bikes-%i.csv" % year
     if not os.path.exists(fname):
-        urlretrieve(URLS[year], fname)
+        with requests.get(URLS[year], stream=True, verify=False) as r:
+            r.raise_for_status()
+            with open(fname, 'wb') as w:
+                for chunk in r.iter_content(chunk_size=65535):
+                    w.write(chunk)
 
     data = pd.read_csv(fname, parse_dates=True, dayfirst=True, index_col='Datum')
 
