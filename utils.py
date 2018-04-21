@@ -37,15 +37,16 @@ def get_velo_data(location, year=2016):
     return data
 
 
-def get_weather_data():
-    """Zurich weather data for 2016"""
-    fname = 'weather-2016.html'
+def get_weather_data(year=2016):
+    """Zurich weather data for the year"""
+    fname = 'weather-%i.html' % year
     if not os.path.exists(fname):
-        data = ('messw_beg=01.01.2016&messw_end=31.12.2016&'
+        data = ('messw_beg=01.01.%i&messw_end=31.12.%i&'
                 'felder[]=Temp2m&felder[]=TempWasser&felder[]=Windchill&'
                 'felder[]=LuftdruckQFE&felder[]=Regen&felder[]=Taupunkt&'
                 'felder[]=Strahlung&felder[]=Feuchte&felder[]=Pegel&'
-                'auswahl=2&combilog=mythenquai&suchen=Werte anzeigen')
+                'auswahl=2&combilog=mythenquai&suchen=Werte anzeigen'
+                % (year, year))
         data = data.encode('ascii')
 
         req = urllib.request.Request(
