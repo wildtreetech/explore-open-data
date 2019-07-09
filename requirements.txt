@@ -1,5 +1,5 @@
 requests
-panda
+pandas
 matplotlib
 lxml
 beautifulsoup4
